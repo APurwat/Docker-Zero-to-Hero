@@ -13,9 +13,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code
 COPY devops /app/devops
 
+# Copy the entrypoint script
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Make the entrypoint script executable
+RUN chmod +x /app/entrypoint.sh
+
 # Set the working directory to where the manage.py is located, if it's in /app/devops
 WORKDIR /app/devops
 
-# Set the default command to run the application
-ENTRYPOINT ["python3"]
-CMD ["manage.py", "runserver", "0.0.0.0:8000"]
+# Set the default command to run the entrypoint script and then the application
+ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
