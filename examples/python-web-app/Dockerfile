@@ -1,16 +1,14 @@
-# Use an official Ubuntu runtime as a parent image
-FROM ubuntu:latest
+# Use an official Python runtime as a parent image
+FROM python:3.8-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the requirements file first for leveraging Docker cache
+# Copy the requirements file first to leverage Docker cache
 COPY requirements.txt /app
 
-# Install dependencies
-RUN apt-get update && \
-    apt-get install -y python3 python3-pip && \
-    pip3 install --no-cache-dir -r requirements.txt
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code
 COPY devops /app/devops
